@@ -1,0 +1,50 @@
+.container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  z-index: -2; /* Lower z-index to ensure it's behind all content */
+}
+
+.canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  filter: blur(2px); /* Add blur effect to the background */
+}
+
+@keyframes spriteAnimation {
+  0% { background-position: 0% center; }
+  100% { background-position: -1100% center; } /* Slight adjustment to ensure visibility */
+}
+
+.frame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('/spr_backgroundTest.png');
+  background-size: 1200% 100%; /* 12 frames */
+  background-repeat: no-repeat;
+  background-position: center;
+  /* Timing function adjustment to ensure discrete steps */
+  animation: spriteAnimation 1s steps(11, jump-none) infinite;
+  /* Force hardware acceleration */
+  transform: translate3d(0, 0, 0);
+  /* Control image rendering */
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  image-rendering: pixelated;
+  /* Promote to GPU layer to prevent flashing */
+  transform: translateZ(0);
+  will-change: background-position;
+  /* Force pixel alignment */
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+} 
