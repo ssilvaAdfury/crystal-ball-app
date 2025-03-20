@@ -233,11 +233,21 @@ export default function HomePage() {
               
               // For iOS, open in new window with proper content type
               if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-                const link = document.createElement('a');
-                link.href = dataURL;
-                link.download = 'adentus_furiosi_fortune.png';
-                link.target = '_blank';
-                link.click();
+                const newWindow = window.open('', '_blank');
+                if (newWindow) {
+                  newWindow.document.write(`
+                    <html>
+                      <head>
+                        <title>Your Fortune</title>
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                      </head>
+                      <body style="margin:0;display:flex;justify-content:center;align-items:center;background:#1a1040;">
+                        <img src="${dataURL}" style="max-width:100%;height:auto;" />
+                      </body>
+                    </html>
+                  `);
+                  newWindow.document.close();
+                }
                 resolve();
               } else {
                 // For other devices, use the iframe download approach
@@ -370,11 +380,21 @@ export default function HomePage() {
           
           // For iOS, open in new window with proper content type
           if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-            const link = document.createElement('a');
-            link.href = dataURL;
-            link.download = 'adentus_furiosi_fortune.png';
-            link.target = '_blank';
-            link.click();
+            const newWindow = window.open('', '_blank');
+            if (newWindow) {
+              newWindow.document.write(`
+                <html>
+                  <head>
+                    <title>Your Fortune</title>
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                  </head>
+                  <body style="margin:0;display:flex;justify-content:center;align-items:center;background:#1a1040;">
+                    <img src="${dataURL}" style="max-width:100%;height:auto;" />
+                  </body>
+                </html>
+              `);
+              newWindow.document.close();
+            }
             resolve();
           } else {
             // For other devices, use the iframe download approach
