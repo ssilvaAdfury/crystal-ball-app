@@ -579,23 +579,31 @@ export default function HomePage() {
                                 </Button>
                                 
                                 <Button 
-                                  onClick={() => {
-                                    // Copy fortune text to clipboard
-                                    navigator.clipboard.writeText(fortune)
-                                      .then(() => {
-                                        const button = document.activeElement as HTMLButtonElement;
-                                        if (button) {
-                                          const originalText = button.innerText;
-                                          button.innerText = "Copied!";
-                                          setTimeout(() => {
-                                            button.innerText = originalText;
-                                          }, 2000);
-                                        }
-                                      })
-                                      .catch(err => {
-                                        console.error('Failed to copy: ', err);
-                                        alert('Failed to copy text');
-                                      });
+                                  onClick={async (e) => {
+                                    e.preventDefault();
+                                    const button = e.currentTarget;
+                                    
+                                    // Store the current focus state
+                                    const focusInterval = setInterval(() => {
+                                      button.focus();
+                                    }, 50);
+
+                                    try {
+                                      await navigator.clipboard.writeText(fortune);
+                                      const originalText = button.innerText;
+                                      button.innerText = "Copied!";
+                                      setTimeout(() => {
+                                        button.innerText = originalText;
+                                      }, 2000);
+                                    } catch (err) {
+                                      console.error('Failed to copy: ', err);
+                                      alert('Failed to copy text');
+                                    } finally {
+                                      // Clear the focus interval after a delay
+                                      setTimeout(() => {
+                                        clearInterval(focusInterval);
+                                      }, 500);
+                                    }
                                   }}
                                   className="bg-blue-600 hover:bg-blue-700 w-full mb-6"
                                 >
