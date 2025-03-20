@@ -217,10 +217,9 @@ export default function HomePage() {
               // Convert to data URL first
               const dataURL = canvas.toDataURL('image/png', 0.95);
               
-              // For iOS, open in new window with proper content type
+              // For iOS, open in new window
               if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-                // Open the data URL directly in the current window
-                window.location.href = dataURL;
+                window.open(dataURL, '_blank');
                 resolve();
               } else {
                 // For other devices, use the iframe download approach
