@@ -219,7 +219,11 @@ export default function HomePage() {
               
               // For iOS, open in new window with proper content type
               if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-                window.open(dataURL);
+                const link = document.createElement('a');
+                link.href = dataURL;
+                link.download = 'adentus_furiosi_fortune.png';
+                link.target = '_blank';
+                link.click();
                 resolve();
               } else {
                 // For other devices, use the iframe download approach
@@ -352,13 +356,11 @@ export default function HomePage() {
           
           // For iOS, open in new window with proper content type
           if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-            // Create a temporary link and click it
             const link = document.createElement('a');
             link.href = dataURL;
+            link.download = 'adentus_furiosi_fortune.png';
             link.target = '_blank';
-            document.body.appendChild(link);
             link.click();
-            document.body.removeChild(link);
             resolve();
           } else {
             // For other devices, use the iframe download approach
