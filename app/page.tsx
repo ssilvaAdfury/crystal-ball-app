@@ -219,7 +219,27 @@ export default function HomePage() {
               
               // For iOS, open in new tab instead of downloading
               if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-                window.open(dataURL, '_blank');
+                // Create a temporary anchor element
+                const link = document.createElement('a');
+                link.href = dataURL;
+                link.target = '_blank';
+                document.body.appendChild(link);
+                
+                // Create a click event
+                const clickEvent = new MouseEvent('click', {
+                  view: window,
+                  bubbles: true,
+                  cancelable: false
+                });
+                
+                // Dispatch the click event
+                link.dispatchEvent(clickEvent);
+                
+                // Clean up
+                setTimeout(() => {
+                  document.body.removeChild(link);
+                  resolve();
+                }, 100);
               } else {
                 // For other devices, use the iframe download approach
                 const iframe = document.createElement('iframe');
@@ -351,7 +371,27 @@ export default function HomePage() {
           
           // For iOS, open in new tab instead of downloading
           if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-            window.open(dataURL, '_blank');
+            // Create a temporary anchor element
+            const link = document.createElement('a');
+            link.href = dataURL;
+            link.target = '_blank';
+            document.body.appendChild(link);
+            
+            // Create a click event
+            const clickEvent = new MouseEvent('click', {
+              view: window,
+              bubbles: true,
+              cancelable: false
+            });
+            
+            // Dispatch the click event
+            link.dispatchEvent(clickEvent);
+            
+            // Clean up
+            setTimeout(() => {
+              document.body.removeChild(link);
+              resolve();
+            }, 100);
           } else {
             // For other devices, use the iframe download approach
             const iframe = document.createElement('iframe');
@@ -636,7 +676,7 @@ export default function HomePage() {
                                   </Button>
                                   <Button 
                                     onClick={() => {
-                                      const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent( fortune + ' 𝐔𝐧𝐥𝐨𝐜𝐤 𝐲𝐨𝐮𝐫 𝐦𝐚𝐫𝐤��𝐭𝐢𝐧𝐠 𝐩𝐨𝐭𝐞𝐧𝐭𝐢𝐚𝐥: https://www.adfury.ai')}`; /*These are special Unicode characters. Ask claude to fix this if it's too weird.*/
+                                      const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent( fortune + ' 𝐔𝐧𝐥𝐨𝐜𝐤 𝐲𝐨𝐮𝐫 𝐦𝐚𝐫𝐤𝐢𝐧𝐠 𝐩𝐨𝐭𝐞𝐧𝐭𝐢𝐚𝐥: https://www.adfury.ai')}`; /*These are special Unicode characters. Ask claude to fix this if it's too weird.*/
                                       window.open(url, '_blank', 'width=600,height=400');
                                     }}
                                     className="bg-black hover:bg-gray-800 px-4 flex-1 md:flex-none"
@@ -680,11 +720,11 @@ export default function HomePage() {
                     value={color}
                     onChange={(e) => setColor(e.target.value)}
                     className="w-full p-2 rounded-lg bg-black/20 border border-purple-300/30 backdrop-blur-sm text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-transparent"
-                    placeholder="Enter a color..."
+                    placeholder="Any color will do..."
                   />
                 </div>
                 <div>
-                  <label className="block mb-1 text-sm sm:text-base text-gray-100/90">How are you feeling today?</label>
+                  <label className="block mb-1 text-sm sm:text-base text-gray-100/90">How are you feeling today?:</label>
                   <input
                     type="text"
                     value={mood}
