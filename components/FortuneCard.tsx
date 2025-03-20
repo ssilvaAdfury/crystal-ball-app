@@ -31,7 +31,6 @@ const FortuneCard = forwardRef<HTMLDivElement, FortuneCardProps>(
               priority
               unoptimized
             />
-            <h3 className={styles.cardTitle}>Your Crystal Ball Fortune</h3>
           </div>
           
           {/* Fortune text */}

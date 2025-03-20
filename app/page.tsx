@@ -108,7 +108,6 @@ export default function HomePage() {
       captureDiv.innerHTML = `
         <div style="text-align: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
           <img src="${window.location.origin}/adfuryLogo.png" width="80" height="80" style="margin: 0 auto 10px auto; display: block;">
-          <h3 style="margin: 10px 0; font-size: 24px; font-weight: 600; color: #e2c4ff;">Your Crystal Ball Fortune</h3>
         </div>
         <div style="background-color: rgba(0, 0, 0, 0.2); padding: 20px; border-radius: 10px;">
           <p style="font-size: 18px; line-height: 1.5; text-align: center; color: #ffffff;">
@@ -309,12 +308,6 @@ export default function HomePage() {
         // Set a timeout to prevent hanging if image never loads
         setTimeout(() => resolve(false), 1000);
       });
-      
-      // Add title
-      ctx.font = 'bold 24px Arial';
-      ctx.fillStyle = '#e2c4ff';
-      ctx.textAlign = 'center';
-      ctx.fillText('Your Crystal Ball Fortune', canvas.width/2, 120);
       
       // Draw a divider
       ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
