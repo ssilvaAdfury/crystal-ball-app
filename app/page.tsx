@@ -219,27 +219,22 @@ export default function HomePage() {
               
               // For iOS, open in new tab instead of downloading
               if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-                // Create a temporary anchor element
-                const link = document.createElement('a');
-                link.href = dataURL;
-                link.target = '_blank';
-                document.body.appendChild(link);
-                
-                // Create a click event
-                const clickEvent = new MouseEvent('click', {
-                  view: window,
-                  bubbles: true,
-                  cancelable: false
-                });
-                
-                // Dispatch the click event
-                link.dispatchEvent(clickEvent);
-                
-                // Clean up
-                setTimeout(() => {
-                  document.body.removeChild(link);
-                  resolve();
-                }, 100);
+                const newWindow = window.open();
+                if (newWindow) {
+                  newWindow.document.write(`
+                    <html>
+                      <head>
+                        <title>Your Fortune</title>
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                      </head>
+                      <body style="margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #1a1040;">
+                        <img src="${dataURL}" style="max-width: 100%; height: auto;" alt="Your Fortune">
+                      </body>
+                    </html>
+                  `);
+                  newWindow.document.close();
+                }
+                resolve();
               } else {
                 // For other devices, use the iframe download approach
                 const iframe = document.createElement('iframe');
@@ -371,27 +366,22 @@ export default function HomePage() {
           
           // For iOS, open in new tab instead of downloading
           if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-            // Create a temporary anchor element
-            const link = document.createElement('a');
-            link.href = dataURL;
-            link.target = '_blank';
-            document.body.appendChild(link);
-            
-            // Create a click event
-            const clickEvent = new MouseEvent('click', {
-              view: window,
-              bubbles: true,
-              cancelable: false
-            });
-            
-            // Dispatch the click event
-            link.dispatchEvent(clickEvent);
-            
-            // Clean up
-            setTimeout(() => {
-              document.body.removeChild(link);
-              resolve();
-            }, 100);
+            const newWindow = window.open();
+            if (newWindow) {
+              newWindow.document.write(`
+                <html>
+                  <head>
+                    <title>Your Fortune</title>
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                  </head>
+                  <body style="margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #1a1040;">
+                    <img src="${dataURL}" style="max-width: 100%; height: auto;" alt="Your Fortune">
+                  </body>
+                </html>
+              `);
+              newWindow.document.close();
+            }
+            resolve();
           } else {
             // For other devices, use the iframe download approach
             const iframe = document.createElement('iframe');
