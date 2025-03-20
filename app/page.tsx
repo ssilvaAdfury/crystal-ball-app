@@ -225,46 +225,41 @@ export default function HomePage() {
           
           console.log("Canvas created, now handling the image...");
           
-          // Use a simple approach for displaying the image
+          // Convert to data URL
+          const dataURL = canvas.toDataURL('image/png', 0.95);
+          
+          // Return a promise for the download operation
           return new Promise<void>((resolve) => {
+            // Method that works consistently regardless of entry point
             try {
-              // Convert to data URL
-              const dataURL = canvas.toDataURL('image/png', 0.95);
+              // Create a temporary anchor element
+              const a = document.createElement('a');
+              a.href = dataURL;
               
-              // Simple approach that works on iOS regardless of access method
-              const win = window.open('');
-              if (win) {
-                win.document.write(`
-                  <html>
-                  <head>
-                    <title>adentus_furiosi_fortune.png</title>
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                  </head>
-                  <body style="margin:0;padding:0;display:flex;align-items:center;justify-content:center;background:none;">
-                    <img src="${dataURL}" style="max-width:100%;height:auto;" />
-                  </body>
-                  </html>
-                `);
-                win.document.close();
-              } else {
-                // Fallback if popup is blocked
-                const a = document.createElement('a');
-                a.href = dataURL;
-                a.download = 'adentus_furiosi_fortune.png';
-                document.body.appendChild(a);
-                a.click();
+              // Important: This prevents the download prompt on iOS
+              a.setAttribute('target', '_blank');
+              a.setAttribute('rel', 'noopener noreferrer');
+              
+              // Set download attribute but don't rely on it for iOS
+              a.download = 'adentus_furiosi_fortune.png';
+              
+              // Add to DOM briefly (required for Firefox)
+              document.body.appendChild(a);
+              
+              // Trigger the click programmatically
+              a.click();
+              
+              // Clean up
+              setTimeout(() => {
                 document.body.removeChild(a);
-              }
+              }, 100);
+              
               resolve();
             } catch (error) {
               console.error("Error in download process:", error);
               
               // Last resort fallback - direct navigation
-              try {
-                window.location.href = canvas.toDataURL('image/png');
-              } catch (e) {
-                console.error("Fatal error in fortune capture:", e);
-              }
+              window.location.href = dataURL;
               resolve();
             }
           });
@@ -365,40 +360,43 @@ export default function HomePage() {
           // Convert to data URL
           const dataURL = canvas.toDataURL('image/png', 0.95);
           
-          // Simple approach that works on iOS regardless of access method
-          const win = window.open('');
-          if (win) {
-            win.document.write(`
-              <html>
-              <head>
-                <title>adentus_furiosi_fortune.png</title>
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-              </head>
-              <body style="margin:0;padding:0;display:flex;align-items:center;justify-content:center;background:none;">
-                <img src="${dataURL}" style="max-width:100%;height:auto;" />
-              </body>
-              </html>
-            `);
-            win.document.close();
-          } else {
-            // Fallback if popup is blocked
+          // Method that works consistently regardless of entry point
+          try {
+            // Create a temporary anchor element
             const a = document.createElement('a');
             a.href = dataURL;
+            
+            // Important: This prevents the download prompt on iOS
+            a.setAttribute('target', '_blank');
+            a.setAttribute('rel', 'noopener noreferrer');
+            
+            // Set download attribute but don't rely on it for iOS
             a.download = 'adentus_furiosi_fortune.png';
+            
+            // Add to DOM briefly (required for Firefox)
             document.body.appendChild(a);
+            
+            // Trigger the click programmatically
             a.click();
-            document.body.removeChild(a);
+            
+            // Clean up
+            setTimeout(() => {
+              document.body.removeChild(a);
+            }, 100);
+            
+            resolve();
+          } catch (error) {
+            console.error("Error in download process:", error);
+            
+            // Last resort fallback - direct navigation
+            window.location.href = dataURL;
+            resolve();
           }
-          resolve();
         } catch (error) {
           console.error("Error in canvas fallback:", error);
           
           // Last resort fallback - direct navigation
-          try {
-            window.location.href = canvas.toDataURL('image/png');
-          } catch (e) {
-            console.error("Fatal error in fortune capture:", e);
-          }
+          window.location.href = canvas.toDataURL('image/png');
           resolve();
         }
       });
