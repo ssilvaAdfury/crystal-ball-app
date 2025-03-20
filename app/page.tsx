@@ -217,23 +217,21 @@ export default function HomePage() {
               // Convert to data URL first
               const dataURL = canvas.toDataURL('image/png', 0.95);
               
-              // For iOS, open in new tab instead of downloading
+              // For iOS, create a direct link in the current window
               if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-                const newWindow = window.open();
-                if (newWindow) {
-                  newWindow.document.write(`
-                    <html>
-                      <head>
-                        <title>Your Fortune</title>
-                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                      </head>
-                      <body style="margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #1a1040;">
-                        <img src="${dataURL}" style="max-width: 100%; height: auto;" alt="Your Fortune">
-                      </body>
-                    </html>
-                  `);
-                  newWindow.document.close();
-                }
+                // Create a temporary link
+                const link = document.createElement('a');
+                link.href = dataURL;
+                link.target = '_self'; // Open in same window
+                document.body.appendChild(link);
+                
+                // Trigger click
+                link.click();
+                
+                // Clean up
+                setTimeout(() => {
+                  document.body.removeChild(link);
+                }, 100);
                 resolve();
               } else {
                 // For other devices, use the iframe download approach
@@ -364,23 +362,21 @@ export default function HomePage() {
           // Use data URL approach for more reliable downloads
           const dataURL = canvas.toDataURL('image/png', 0.95);
           
-          // For iOS, open in new tab instead of downloading
+          // For iOS, create a direct link in the current window
           if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-            const newWindow = window.open();
-            if (newWindow) {
-              newWindow.document.write(`
-                <html>
-                  <head>
-                    <title>Your Fortune</title>
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                  </head>
-                  <body style="margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #1a1040;">
-                    <img src="${dataURL}" style="max-width: 100%; height: auto;" alt="Your Fortune">
-                  </body>
-                </html>
-              `);
-              newWindow.document.close();
-            }
+            // Create a temporary link
+            const link = document.createElement('a');
+            link.href = dataURL;
+            link.target = '_self'; // Open in same window
+            document.body.appendChild(link);
+            
+            // Trigger click
+            link.click();
+            
+            // Clean up
+            setTimeout(() => {
+              document.body.removeChild(link);
+            }, 100);
             resolve();
           } else {
             // For other devices, use the iframe download approach
