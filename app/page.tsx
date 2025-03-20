@@ -703,7 +703,7 @@ export default function HomePage() {
                     type="text"
                     value={color}
                     onChange={(e) => setColor(e.target.value)}
-                    className="w-full p-2 rounded-lg bg-black/20 border border-purple-300/30 backdrop-blur-sm text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-transparent appearance-none [background:rgba(0,0,0,0.2)!important] [-webkit-background:rgba(0,0,0,0.2)!important]"
+                    className="w-full p-2 rounded-lg border border-purple-300/30 backdrop-blur-sm text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-transparent appearance-none bg-[#1a1040] bg-opacity-60"
                     placeholder="Any color will do..."
                   />
                 </div>
@@ -713,7 +713,7 @@ export default function HomePage() {
                     type="text"
                     value={mood}
                     onChange={(e) => setMood(e.target.value)}
-                    className="w-full p-2 rounded-lg bg-black/20 border border-purple-300/30 backdrop-blur-sm text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-transparent appearance-none [background:rgba(0,0,0,0.2)!important] [-webkit-background:rgba(0,0,0,0.2)!important]"
+                    className="w-full p-2 rounded-lg border border-purple-300/30 backdrop-blur-sm text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-transparent appearance-none bg-[#1a1040] bg-opacity-60"
                     placeholder="Describe your mood..."
                   />
                 </div>
@@ -723,7 +723,7 @@ export default function HomePage() {
                     type="text"
                     value={dream}
                     onChange={(e) => setDream(e.target.value)}
-                    className="w-full p-2 rounded-lg bg-black/20 border border-purple-300/30 backdrop-blur-sm text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-transparent appearance-none [background:rgba(0,0,0,0.2)!important] [-webkit-background:rgba(0,0,0,0.2)!important]"
+                    className="w-full p-2 rounded-lg border border-purple-300/30 backdrop-blur-sm text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-transparent appearance-none bg-[#1a1040] bg-opacity-60"
                     placeholder="Tell me about your dream..."
                   />
                 </div>
