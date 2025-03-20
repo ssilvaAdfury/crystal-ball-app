@@ -231,27 +231,9 @@ export default function HomePage() {
               // Convert to data URL first
               const dataURL = canvas.toDataURL('image/png', 0.95);
               
-              // Open in new window for all devices
-              const newWindow = window.open('about:blank', '_blank');
-              if (newWindow) {
-                newWindow.document.write(`
-                  <html>
-                    <head>
-                      <title>adentus_furiosi_fortune.png</title>
-                      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    </head>
-                    <body style="margin:0;padding:0;display:flex;justify-content:center;align-items:center;background:none;">
-                      <img src="${dataURL}" style="max-width:100%;height:auto;" />
-                    </body>
-                  </html>
-                `);
-                newWindow.document.close();
-                resolve();
-              } else {
-                // Fallback if window.open is blocked
-                window.location.href = dataURL;
-                resolve();
-              }
+              // Directly navigate to the image URL
+              window.location.href = dataURL;
+              resolve();
             } catch (error) {
               console.error("Error in download process:", error);
               reject(error);
@@ -357,27 +339,9 @@ export default function HomePage() {
           // Use data URL approach for more reliable downloads
           const dataURL = canvas.toDataURL('image/png', 0.95);
           
-          // Open in new window for all devices
-          const newWindow = window.open('about:blank', '_blank');
-          if (newWindow) {
-            newWindow.document.write(`
-              <html>
-                <head>
-                  <title>adentus_furiosi_fortune.png</title>
-                  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                </head>
-                <body style="margin:0;padding:0;display:flex;justify-content:center;align-items:center;background:none;">
-                  <img src="${dataURL}" style="max-width:100%;height:auto;" />
-                </body>
-              </html>
-            `);
-            newWindow.document.close();
-            resolve();
-          } else {
-            // Fallback if window.open is blocked
-            window.location.href = dataURL;
-            resolve();
-          }
+          // Directly navigate to the image URL
+          window.location.href = dataURL;
+          resolve();
         } catch (error) {
           console.error("Error in canvas fallback:", error);
           reject(error);
