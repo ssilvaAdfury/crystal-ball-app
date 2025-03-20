@@ -217,63 +217,25 @@ export default function HomePage() {
               // Convert to data URL first
               const dataURL = canvas.toDataURL('image/png', 0.95);
               
-              // For iOS, create a temporary image and trigger native save interface
+              // For iOS, open in new window with proper content type
               if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-                // Create a temporary container
-                const container = document.createElement('div');
-                container.style.position = 'fixed';
-                container.style.top = '0';
-                container.style.left = '0';
-                container.style.width = '100%';
-                container.style.height = '100%';
-                container.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
-                container.style.zIndex = '999999';
-                container.style.display = 'flex';
-                container.style.alignItems = 'center';
-                container.style.justifyContent = 'center';
-                container.style.flexDirection = 'column';
-
-                // Create image element
-                const img = document.createElement('img');
-                img.src = dataURL;
-                img.style.maxWidth = '90%';
-                img.style.maxHeight = '70vh';
-                img.style.borderRadius = '12px';
-                img.style.boxShadow = '0 4px 12px rgba(0,0,0,0.2)';
-
-                // Add instructions
-                const text = document.createElement('p');
-                text.textContent = 'Tap and hold image to save';
-                text.style.color = 'white';
-                text.style.marginTop = '20px';
-                text.style.fontFamily = '-apple-system, system-ui, sans-serif';
-
-                // Add close button
-                const closeBtn = document.createElement('button');
-                closeBtn.textContent = '×';
-                closeBtn.style.position = 'absolute';
-                closeBtn.style.top = '20px';
-                closeBtn.style.right = '20px';
-                closeBtn.style.fontSize = '30px';
-                closeBtn.style.color = 'white';
-                closeBtn.style.background = 'none';
-                closeBtn.style.border = 'none';
-                closeBtn.style.cursor = 'pointer';
-                closeBtn.onclick = () => document.body.removeChild(container);
-
-                // Assemble and show
-                container.appendChild(closeBtn);
-                container.appendChild(img);
-                container.appendChild(text);
-                document.body.appendChild(container);
-
-                // Allow tapping outside to close
-                container.onclick = (e) => {
-                  if (e.target === container) {
-                    document.body.removeChild(container);
-                  }
-                };
-
+                const newWindow = window.open();
+                if (newWindow) {
+                  newWindow.document.write(`
+                    <!DOCTYPE html>
+                    <html>
+                      <head>
+                        <title>Your Fortune</title>
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <meta http-equiv="Content-Type" content="image/png">
+                      </head>
+                      <body style="margin:0;padding:0;display:flex;justify-content:center;align-items:center;background:#000;">
+                        <img src="${dataURL}" style="max-width:100%;height:auto;">
+                      </body>
+                    </html>
+                  `);
+                  newWindow.document.close();
+                }
                 resolve();
               } else {
                 // For other devices, use the iframe download approach
@@ -404,63 +366,25 @@ export default function HomePage() {
           // Use data URL approach for more reliable downloads
           const dataURL = canvas.toDataURL('image/png', 0.95);
           
-          // For iOS, create a temporary image and trigger native save interface
+          // For iOS, open in new window with proper content type
           if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-            // Create a temporary container
-            const container = document.createElement('div');
-            container.style.position = 'fixed';
-            container.style.top = '0';
-            container.style.left = '0';
-            container.style.width = '100%';
-            container.style.height = '100%';
-            container.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
-            container.style.zIndex = '999999';
-            container.style.display = 'flex';
-            container.style.alignItems = 'center';
-            container.style.justifyContent = 'center';
-            container.style.flexDirection = 'column';
-
-            // Create image element
-            const img = document.createElement('img');
-            img.src = dataURL;
-            img.style.maxWidth = '90%';
-            img.style.maxHeight = '70vh';
-            img.style.borderRadius = '12px';
-            img.style.boxShadow = '0 4px 12px rgba(0,0,0,0.2)';
-
-            // Add instructions
-            const text = document.createElement('p');
-            text.textContent = 'Tap and hold image to save';
-            text.style.color = 'white';
-            text.style.marginTop = '20px';
-            text.style.fontFamily = '-apple-system, system-ui, sans-serif';
-
-            // Add close button
-            const closeBtn = document.createElement('button');
-            closeBtn.textContent = '×';
-            closeBtn.style.position = 'absolute';
-            closeBtn.style.top = '20px';
-            closeBtn.style.right = '20px';
-            closeBtn.style.fontSize = '30px';
-            closeBtn.style.color = 'white';
-            closeBtn.style.background = 'none';
-            closeBtn.style.border = 'none';
-            closeBtn.style.cursor = 'pointer';
-            closeBtn.onclick = () => document.body.removeChild(container);
-
-            // Assemble and show
-            container.appendChild(closeBtn);
-            container.appendChild(img);
-            container.appendChild(text);
-            document.body.appendChild(container);
-
-            // Allow tapping outside to close
-            container.onclick = (e) => {
-              if (e.target === container) {
-                document.body.removeChild(container);
-              }
-            };
-
+            const newWindow = window.open();
+            if (newWindow) {
+              newWindow.document.write(`
+                <!DOCTYPE html>
+                <html>
+                  <head>
+                    <title>Your Fortune</title>
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <meta http-equiv="Content-Type" content="image/png">
+                  </head>
+                  <body style="margin:0;padding:0;display:flex;justify-content:center;align-items:center;background:#000;">
+                    <img src="${dataURL}" style="max-width:100%;height:auto;">
+                  </body>
+                </html>
+              `);
+              newWindow.document.close();
+            }
             resolve();
           } else {
             // For other devices, use the iframe download approach
