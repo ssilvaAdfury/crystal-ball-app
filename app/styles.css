@@ -32,10 +32,10 @@ h2.text-shadow {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.3);
-  z-index: -1; /* Lower z-index to be below content but above background */
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  pointer-events: none;
 }
 
 /* Drawer customization */
@@ -63,4 +63,63 @@ h2.text-shadow {
   padding: 8px;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes gradientRotate {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.generating-gradient {
+  background: linear-gradient(
+    135deg,
+    #9333ea 0%,
+    #4f46e5 25%,
+    #9333ea 50%,
+    #4f46e5 75%,
+    #9333ea 100%
+  );
+  background-size: 200% 200%;
+  animation: gradientRotate 2s ease infinite;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 1s ease-out forwards;
+}
+
+.fade-out {
+  animation: fadeOut 0.5s ease-out forwards;
+}
+
+.fortune-transition {
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
 } 
