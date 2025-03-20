@@ -33,6 +33,14 @@ export default function HomePage() {
     }
 
     const handleGetFortune = async () => {
+      // Scroll to top on mobile devices
+      if (window.innerWidth <= 768) {  // Common breakpoint for mobile devices
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'  // For smooth scrolling
+        });
+      }
+
       if (fortune) {
         // If there's an existing fortune, fade it out first
         setIsFading(true);
