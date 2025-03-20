@@ -219,23 +219,8 @@ export default function HomePage() {
               
               // For iOS, open in new window with proper content type
               if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-                const newWindow = window.open();
-                if (newWindow) {
-                  newWindow.document.write(`
-                    <!DOCTYPE html>
-                    <html>
-                      <head>
-                        <title>Your Fortune</title>
-                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                        <meta http-equiv="Content-Type" content="image/png">
-                      </head>
-                      <body style="margin:0;padding:0;display:flex;justify-content:center;align-items:center;background:#000;">
-                        <img src="${dataURL}" style="max-width:100%;height:auto;">
-                      </body>
-                    </html>
-                  `);
-                  newWindow.document.close();
-                }
+                // Open the data URL directly in the current window
+                window.location.href = dataURL;
                 resolve();
               } else {
                 // For other devices, use the iframe download approach
