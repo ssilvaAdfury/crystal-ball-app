@@ -33,13 +33,11 @@ export default function HomePage() {
     }
 
     const handleGetFortune = async () => {
-      // Scroll to top on mobile devices
-      if (window.innerWidth <= 768) {  // Common breakpoint for mobile devices
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth'  // For smooth scrolling
-        });
-      }
+      // Always scroll to top, regardless of fortune state
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
 
       if (fortune) {
         // If there's an existing fortune, fade it out first
@@ -699,7 +697,12 @@ export default function HomePage() {
                     onChange={(e) => setColor(e.target.value)}
                     className="w-full p-2 rounded-lg bg-black/20 border border-purple-300/30 backdrop-blur-sm text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-transparent appearance-none"
                     placeholder="Any color will do..."
-                    style={{ WebkitAppearance: 'none', backgroundColor: 'rgba(0, 0, 0, 0.2)' }}
+                    style={{ 
+                      WebkitAppearance: 'none', 
+                      backgroundColor: 'rgba(0, 0, 0, 0.2)',
+                      WebkitTextFillColor: '#fff',
+                      color: '#fff'
+                    }}
                   />
                 </div>
                 <div>
@@ -710,7 +713,12 @@ export default function HomePage() {
                     onChange={(e) => setMood(e.target.value)}
                     className="w-full p-2 rounded-lg bg-black/20 border border-purple-300/30 backdrop-blur-sm text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-transparent appearance-none"
                     placeholder="Describe your mood..."
-                    style={{ WebkitAppearance: 'none', backgroundColor: 'rgba(0, 0, 0, 0.2)' }}
+                    style={{ 
+                      WebkitAppearance: 'none', 
+                      backgroundColor: 'rgba(0, 0, 0, 0.2)',
+                      WebkitTextFillColor: '#fff',
+                      color: '#fff'
+                    }}
                   />
                 </div>
                 <div>
@@ -721,7 +729,12 @@ export default function HomePage() {
                     onChange={(e) => setDream(e.target.value)}
                     className="w-full p-2 rounded-lg bg-black/20 border border-purple-300/30 backdrop-blur-sm text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-transparent appearance-none"
                     placeholder="Tell me about your dream..."
-                    style={{ WebkitAppearance: 'none', backgroundColor: 'rgba(0, 0, 0, 0.2)' }}
+                    style={{ 
+                      WebkitAppearance: 'none', 
+                      backgroundColor: 'rgba(0, 0, 0, 0.2)',
+                      WebkitTextFillColor: '#fff',
+                      color: '#fff'
+                    }}
                   />
                 </div>
 
