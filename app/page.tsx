@@ -219,40 +219,7 @@ export default function HomePage() {
               
               // For iOS, open in new window with proper content type
               if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-                // Convert data URL to blob for better iOS compatibility
-                const byteString = atob(dataURL.split(',')[1]);
-                const mimeString = dataURL.split(',')[0].split(':')[1].split(';')[0];
-                const ab = new ArrayBuffer(byteString.length);
-                const ia = new Uint8Array(ab);
-                for (let i = 0; i < byteString.length; i++) {
-                  ia[i] = byteString.charCodeAt(i);
-                }
-                const blob = new Blob([ab], { type: mimeString });
-                const blobUrl = URL.createObjectURL(blob);
-
-                // Open in new window with proper content type
-                const newWindow = window.open('about:blank', '_blank');
-                if (newWindow) {
-                  newWindow.document.write(`
-                    <!DOCTYPE html>
-                    <html>
-                      <head>
-                        <title>Your Fortune</title>
-                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                        <meta http-equiv="Content-Type" content="image/png">
-                      </head>
-                      <body style="margin:0;padding:0;display:flex;justify-content:center;align-items:center;min-height:100vh;background:#000;">
-                        <img src="${blobUrl}" style="max-width:100%;height:auto;display:block;">
-                      </body>
-                    </html>
-                  `);
-                  newWindow.document.close();
-                  
-                  // Clean up blob URL after window is loaded
-                  setTimeout(() => {
-                    URL.revokeObjectURL(blobUrl);
-                  }, 1000);
-                }
+                window.open(dataURL);
                 resolve();
               } else {
                 // For other devices, use the iframe download approach
