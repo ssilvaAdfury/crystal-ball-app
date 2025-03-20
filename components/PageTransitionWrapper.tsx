@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, easeOut, easeIn, easeInOut, motion } from "framer-motion";
+import { AnimatePresence, easeInOut, motion } from "framer-motion";
 import { usePathname } from "next/navigation";
 
 export default function PageTransitionWrapper({ children }: { children: React.ReactNode }) {

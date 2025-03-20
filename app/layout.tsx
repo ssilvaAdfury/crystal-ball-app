@@ -1,17 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import PageTransitionWrapper from "@/components/PageTransitionWrapper"; 
-
-/*const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});*/
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -19,7 +7,6 @@ export const metadata: Metadata = {
 };
 
 import { Roboto } from "next/font/google";
-import { loadComponents } from "next/dist/server/load-components";
 const roboto = Roboto({
   subsets: ['latin'],
   weight: ['400', '700'],
@@ -33,36 +20,3 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
     </html>
   );
 }
-
-/*export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-      </body>
-    </html>
-  );
-}*/
-
-/* // app/layout.tsx
-import { Cormorant_Garamond } from "next/font/google";
-
-const cormorant = Cormorant_Garamond({
-  subsets: ['latin'],
-  weight: ['400', '700'],
-});
-
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <html lang="en" className={cormorant.className}>
-      <head />
-      <body>{children}</body>
-    </html>
-  );
-} */

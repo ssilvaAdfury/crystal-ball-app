@@ -2,13 +2,10 @@
 
 import { Button } from "@/components/ui/button";
 import { useState, useRef, useEffect } from "react";
-import Image from "next/image";
-import Link from "next/link";
 import "./styles.css";
 import AnimatedBackground from "@/components/AnimatedBackground";
 import { Drawer, DrawerContent, DrawerTrigger, DrawerTitle } from "@/components/ui/drawer";
 import FortuneCard from "@/components/FortuneCard";
-import SimpleFortuneCard from "@/components/SimpleFortuneCard";
 import { captureElement, generateShareUrl } from "@/utils/fortuneCapture";
 import SpriteAnimation from "../components/SpriteAnimation";
 
@@ -131,7 +128,7 @@ export default function HomePage() {
         
         // Preload the image to ensure it's available
         const preloadImage = (src: string): Promise<void> => {
-          return new Promise((resolve, reject) => {
+          return new Promise((resolve) => {
             const img = document.createElement('img') as HTMLImageElement;
             img.onload = () => {
               console.log(`Preloaded image: ${src}`);
@@ -547,9 +544,9 @@ export default function HomePage() {
                                       try {
                                         await captureWithHtml2Canvas();
                                         console.log("Fortune capture successful");
-                                      } catch (error: any) {
+                                      } catch (error: Error | unknown) {
                                         // Silently handle the oklch error if it happens
-                                        if (error.message && error.message.includes("unsupported color function")) {
+                                        if (error instanceof Error && error.message.includes("unsupported color function")) {
                                           console.log("Working around the oklch color function error...");
                                           await createTextBasedFortune();
                                           console.log("Fallback fortune capture successful");
