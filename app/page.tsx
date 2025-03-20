@@ -231,34 +231,27 @@ export default function HomePage() {
               // Convert to data URL first
               const dataURL = canvas.toDataURL('image/png', 0.95);
               
-              // For iOS, open in new window with proper content type
-              if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-                window.location.href = dataURL;
+              // Open in new window for all devices
+              const newWindow = window.open('about:blank', '_blank');
+              if (newWindow) {
+                newWindow.document.write(`
+                  <html>
+                    <head>
+                      <title>adentus_furiosi_fortune.png</title>
+                      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    </head>
+                    <body style="margin:0;padding:0;display:flex;justify-content:center;align-items:center;background:none;">
+                      <img src="${dataURL}" style="max-width:100%;height:auto;" />
+                    </body>
+                  </html>
+                `);
+                newWindow.document.close();
                 resolve();
               } else {
-                // For other devices, use the iframe download approach
-                const iframe = document.createElement('iframe');
-                iframe.style.display = 'none';
-                document.body.appendChild(iframe);
-                
-                const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
-                if (!iframeDoc) {
-                  throw new Error("Could not access iframe document");
-                }
-                
-                const link = iframeDoc.createElement('a');
-                link.href = dataURL;
-                link.download = 'adentus_furiosi_fortune.png';
-                iframeDoc.body.appendChild(link);
-                link.click();
-                
-                // Clean up after a delay
-                setTimeout(() => {
-                  document.body.removeChild(iframe);
-                  resolve();
-                }, 100);
+                // Fallback if window.open is blocked
+                window.location.href = dataURL;
+                resolve();
               }
-              resolve();
             } catch (error) {
               console.error("Error in download process:", error);
               reject(error);
@@ -364,48 +357,27 @@ export default function HomePage() {
           // Use data URL approach for more reliable downloads
           const dataURL = canvas.toDataURL('image/png', 0.95);
           
-          // For iOS, open in new window with proper content type
-          if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-            const newWindow = window.open('', '_blank');
-            if (newWindow) {
-              newWindow.document.write(`
-                <html>
-                  <head>
-                    <title>Your Fortune</title>
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                  </head>
-                  <body style="margin:0;display:flex;justify-content:center;align-items:center;background:#1a1040;">
-                    <img src="${dataURL}" style="max-width:100%;height:auto;" />
-                  </body>
-                </html>
-              `);
-              newWindow.document.close();
-            }
+          // Open in new window for all devices
+          const newWindow = window.open('about:blank', '_blank');
+          if (newWindow) {
+            newWindow.document.write(`
+              <html>
+                <head>
+                  <title>adentus_furiosi_fortune.png</title>
+                  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                </head>
+                <body style="margin:0;padding:0;display:flex;justify-content:center;align-items:center;background:none;">
+                  <img src="${dataURL}" style="max-width:100%;height:auto;" />
+                </body>
+              </html>
+            `);
+            newWindow.document.close();
             resolve();
           } else {
-            // For other devices, use the iframe download approach
-            const iframe = document.createElement('iframe');
-            iframe.style.display = 'none';
-            document.body.appendChild(iframe);
-            
-            const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
-            if (!iframeDoc) {
-              throw new Error("Could not access iframe document");
-            }
-            
-            const link = iframeDoc.createElement('a');
-            link.href = dataURL;
-            link.download = 'adentus_furiosi_fortune.png';
-            iframeDoc.body.appendChild(link);
-            link.click();
-            
-            // Clean up after a delay
-            setTimeout(() => {
-              document.body.removeChild(iframe);
-              resolve();
-            }, 100);
+            // Fallback if window.open is blocked
+            window.location.href = dataURL;
+            resolve();
           }
-          resolve();
         } catch (error) {
           console.error("Error in canvas fallback:", error);
           reject(error);
