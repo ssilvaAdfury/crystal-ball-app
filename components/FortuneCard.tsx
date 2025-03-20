@@ -23,8 +23,8 @@ const FortuneCard = forwardRef<HTMLDivElement, FortuneCardProps>(
           {/* Logo area */}
           <div className={styles.logoArea}>
             <Image 
-              src="/crystalball.png" 
-              alt="Crystal Ball Logo" 
+              src="/adfuryLogo.png" 
+              alt="AdFury Logo" 
               width={100} 
               height={100}
               className={styles.logo}
