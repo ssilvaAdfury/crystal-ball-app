@@ -219,11 +219,24 @@ export default function HomePage() {
               
               // For iOS, open in new window with proper content type
               if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-                const link = document.createElement('a');
-                link.href = dataURL;
-                link.download = 'adentus_furiosi_fortune.png';
-                link.target = '_blank';
-                link.click();
+                const newWindow = window.open('', '_blank');
+                if (newWindow) {
+                  newWindow.document.write(`
+                    <!DOCTYPE html>
+                    <html>
+                      <head>
+                        <title>adentus_furiosi_fortune.png</title>
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <meta http-equiv="Content-Type" content="image/png">
+                      </head>
+                      <body style="margin:0;padding:0;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;background:#fff;">
+                        <div style="margin:20px;text-align:center;">adentus_furiosi_fortune.png</div>
+                        <img src="${dataURL}" style="max-width:90%;height:auto;margin:20px;">
+                      </body>
+                    </html>
+                  `);
+                  newWindow.document.close();
+                }
                 resolve();
               } else {
                 // For other devices, use the iframe download approach
