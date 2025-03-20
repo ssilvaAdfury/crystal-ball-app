@@ -223,20 +223,49 @@ export default function HomePage() {
             }
           });
           
-          console.log("Canvas created, converting to blob...");
+          console.log("Canvas created, now handling the image...");
           
-          // Use a more reliable download approach
-          return new Promise<void>((resolve, reject) => {
+          // Use a simple approach for displaying the image
+          return new Promise<void>((resolve) => {
             try {
-              // Convert to data URL first
+              // Convert to data URL
               const dataURL = canvas.toDataURL('image/png', 0.95);
               
-              // Directly navigate to the image URL
-              window.location.href = dataURL;
+              // Simple approach that works on iOS regardless of access method
+              const win = window.open('');
+              if (win) {
+                win.document.write(`
+                  <html>
+                  <head>
+                    <title>adentus_furiosi_fortune.png</title>
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                  </head>
+                  <body style="margin:0;padding:0;display:flex;align-items:center;justify-content:center;background:none;">
+                    <img src="${dataURL}" style="max-width:100%;height:auto;" />
+                  </body>
+                  </html>
+                `);
+                win.document.close();
+              } else {
+                // Fallback if popup is blocked
+                const a = document.createElement('a');
+                a.href = dataURL;
+                a.download = 'adentus_furiosi_fortune.png';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+              }
               resolve();
             } catch (error) {
               console.error("Error in download process:", error);
-              reject(error);
+              
+              // Last resort fallback - direct navigation
+              try {
+                window.location.href = canvas.toDataURL('image/png');
+              } catch (e) {
+                console.error("Fatal error in fortune capture:", e);
+              }
+              resolve();
             }
           });
         } catch (innerError) {
@@ -247,14 +276,11 @@ export default function HomePage() {
               innerError.message && 
               innerError.message.includes("unsupported color function")) {
             console.log("Detected oklch color error, trying fallback approach...");
-            return await createTextBasedFortune();
+            return createTextBasedFortune();
           }
           
           throw innerError; // Re-throw if it's a different error
         }
-      } catch (error) {
-        console.error("Detailed error capturing fortune:", error);
-        throw error; // Re-throw to trigger fallback
       } finally {
         // Always clean up
         document.body.removeChild(captureDiv);
@@ -333,18 +359,47 @@ export default function HomePage() {
       }
       ctx.fillText(line, canvas.width/2, y);
       
-      // Convert canvas to blob and download
-      return new Promise<void>((resolve, reject) => {
+      // Simple approach for displaying the image
+      return new Promise<void>((resolve) => {
         try {
-          // Use data URL approach for more reliable downloads
+          // Convert to data URL
           const dataURL = canvas.toDataURL('image/png', 0.95);
           
-          // Directly navigate to the image URL
-          window.location.href = dataURL;
+          // Simple approach that works on iOS regardless of access method
+          const win = window.open('');
+          if (win) {
+            win.document.write(`
+              <html>
+              <head>
+                <title>adentus_furiosi_fortune.png</title>
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              </head>
+              <body style="margin:0;padding:0;display:flex;align-items:center;justify-content:center;background:none;">
+                <img src="${dataURL}" style="max-width:100%;height:auto;" />
+              </body>
+              </html>
+            `);
+            win.document.close();
+          } else {
+            // Fallback if popup is blocked
+            const a = document.createElement('a');
+            a.href = dataURL;
+            a.download = 'adentus_furiosi_fortune.png';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+          }
           resolve();
         } catch (error) {
           console.error("Error in canvas fallback:", error);
-          reject(error);
+          
+          // Last resort fallback - direct navigation
+          try {
+            window.location.href = canvas.toDataURL('image/png');
+          } catch (e) {
+            console.error("Fatal error in fortune capture:", e);
+          }
+          resolve();
         }
       });
     };
