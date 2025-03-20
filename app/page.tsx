@@ -456,7 +456,7 @@ export default function HomePage() {
                   displayHeight={480}
                   idleFrameCount={11}
                   actionFrameCount={20}
-                  fps={8}
+                  fps={10}
                   isPlaying={isGenerating}
                   onActionComplete={() => setIsGenerating(false)}
                 />
