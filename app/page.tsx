@@ -217,9 +217,24 @@ export default function HomePage() {
               // Convert to data URL first
               const dataURL = canvas.toDataURL('image/png', 0.95);
               
-              // For iOS, open in new window
+              // For iOS, open in new window with proper content type
               if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-                window.open(dataURL, '_blank');
+                const newWindow = window.open('about:blank', '_blank');
+                if (newWindow) {
+                  newWindow.document.write(`
+                    <!DOCTYPE html>
+                    <html>
+                      <head>
+                        <title>Your Fortune</title>
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                      </head>
+                      <body style="margin:0;padding:0;display:flex;justify-content:center;align-items:center;background:#000;">
+                        <img src="${dataURL}" style="width:100%;height:auto;max-width:100vw;">
+                      </body>
+                    </html>
+                  `);
+                  newWindow.document.close();
+                }
                 resolve();
               } else {
                 // For other devices, use the iframe download approach
@@ -352,7 +367,7 @@ export default function HomePage() {
           
           // For iOS, open in new window with proper content type
           if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-            const newWindow = window.open();
+            const newWindow = window.open('about:blank', '_blank');
             if (newWindow) {
               newWindow.document.write(`
                 <!DOCTYPE html>
@@ -360,10 +375,9 @@ export default function HomePage() {
                   <head>
                     <title>Your Fortune</title>
                     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    <meta http-equiv="Content-Type" content="image/png">
                   </head>
                   <body style="margin:0;padding:0;display:flex;justify-content:center;align-items:center;background:#000;">
-                    <img src="${dataURL}" style="max-width:100%;height:auto;">
+                    <img src="${dataURL}" style="width:100%;height:auto;max-width:100vw;">
                   </body>
                 </html>
               `);
