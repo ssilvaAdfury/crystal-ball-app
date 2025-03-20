@@ -689,13 +689,13 @@ export default function HomePage() {
                   />
                 </div>
                 <div>
-                  <label className="block mb-1 text-sm sm:text-base text-gray-100/90">Share a fun fact about yourself:</label>
+                  <label className="block mb-1 text-sm sm:text-base text-gray-100/90">Share the most recent dream you remember:</label>
                   <input
                     type="text"
                     value={dream}
                     onChange={(e) => setDream(e.target.value)}
                     className="w-full p-2 rounded-lg bg-black/20 border border-purple-300/30 backdrop-blur-sm text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-transparent"
-                    placeholder="Tell me something interesting..."
+                    placeholder="Tell me about your dream..."
                   />
                 </div>
 
