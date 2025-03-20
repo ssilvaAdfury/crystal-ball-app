@@ -14,7 +14,7 @@ export default function SimpleFortuneCard({ fortune }: SimpleFortuneCardProps) {
         {/* Logo area */}
         <div className={styles.logoArea}>
           <Image 
-            src="/adfuryLogo.png" 
+            src="/adfuryLogo2.png" 
             alt="AdFury Logo" 
             width={100} 
             height={100}

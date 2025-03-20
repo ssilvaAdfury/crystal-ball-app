@@ -107,7 +107,7 @@ export default function HomePage() {
       // Skip the image and just use text
       captureDiv.innerHTML = `
         <div style="text-align: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
-          <img src="${window.location.origin}/adfuryLogo.png" width="80" height="80" style="margin: 0 auto 10px auto; display: block;">
+          <img src="${window.location.origin}/adfuryLogo2.png" width="80" height="80" style="margin: 0 auto 10px auto; display: block;">
         </div>
         <div style="background-color: rgba(0, 0, 0, 0.2); padding: 20px; border-radius: 10px;">
           <p style="font-size: 18px; line-height: 1.5; text-align: center; color: #ffffff;">
@@ -143,7 +143,7 @@ export default function HomePage() {
         };
         
         // Preload the crystal ball image
-        await preloadImage('/adfuryLogo.png');
+        await preloadImage('/adfuryLogo2.png');
         
         // Wait for images to load
         await new Promise(resolve => setTimeout(resolve, 500));
@@ -214,34 +214,36 @@ export default function HomePage() {
           // Use a more reliable download approach
           return new Promise<void>((resolve, reject) => {
             try {
-              // Convert to data URL first - this is more reliable
+              // Convert to data URL first
               const dataURL = canvas.toDataURL('image/png', 0.95);
               
-              // Create invisible iframe for downloading without DOM focus issues
-              const iframe = document.createElement('iframe');
-              iframe.style.display = 'none';
-              document.body.appendChild(iframe);
-              
-              // Use the iframe's document to create and trigger the download
-              const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
-              if (!iframeDoc) {
-                throw new Error("Could not access iframe document");
+              // For iOS, open in new tab instead of downloading
+              if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+                window.open(dataURL, '_blank');
+              } else {
+                // For other devices, use the iframe download approach
+                const iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                document.body.appendChild(iframe);
+                
+                const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
+                if (!iframeDoc) {
+                  throw new Error("Could not access iframe document");
+                }
+                
+                const link = iframeDoc.createElement('a');
+                link.href = dataURL;
+                link.download = 'adentus_furiosi_fortune.png';
+                iframeDoc.body.appendChild(link);
+                link.click();
+                
+                // Clean up after a delay
+                setTimeout(() => {
+                  document.body.removeChild(iframe);
+                  resolve();
+                }, 100);
               }
-              
-              // Create a download link in the iframe
-              const link = iframeDoc.createElement('a');
-              link.href = dataURL;
-              link.download = 'crystal-ball-fortune.png';
-              iframeDoc.body.appendChild(link);
-              
-              // Trigger click in the iframe context
-              link.click();
-              
-              // Clean up after a delay
-              setTimeout(() => {
-                document.body.removeChild(iframe);
-                resolve();
-              }, 100);
+              resolve();
             } catch (error) {
               console.error("Error in download process:", error);
               reject(error);
@@ -289,7 +291,7 @@ export default function HomePage() {
       const img = document.createElement('img') as HTMLImageElement;
       img.crossOrigin = "anonymous"; // Try to avoid CORS issues
       
-      console.log("Attempting to load image from:", window.location.origin + "/adfuryLogo.png");
+      console.log("Attempting to load image from:", window.location.origin + "/adfuryLogo2.png");
       
       // Create a promise to wait for image loading
       await new Promise<boolean>((resolve) => {
@@ -300,10 +302,10 @@ export default function HomePage() {
           resolve(true);
         };
         img.onerror = () => {
-          console.error("Error loading AdFury logo from:", window.location.origin + "/adfuryLogo.png");
+          console.error("Error loading AdFury logo from:", window.location.origin + "/adfuryLogo2.png");
           resolve(false); // Continue even if image fails
         };
-        img.src = window.location.origin + "/adfuryLogo.png";
+        img.src = window.location.origin + "/adfuryLogo2.png";
         
         // Set a timeout to prevent hanging if image never loads
         setTimeout(() => resolve(false), 1000);
@@ -347,31 +349,33 @@ export default function HomePage() {
           // Use data URL approach for more reliable downloads
           const dataURL = canvas.toDataURL('image/png', 0.95);
           
-          // Create invisible iframe for downloading without DOM focus issues
-          const iframe = document.createElement('iframe');
-          iframe.style.display = 'none';
-          document.body.appendChild(iframe);
-          
-          // Use the iframe's document to create and trigger the download
-          const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
-          if (!iframeDoc) {
-            throw new Error("Could not access iframe document");
+          // For iOS, open in new tab instead of downloading
+          if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+            window.open(dataURL, '_blank');
+          } else {
+            // For other devices, use the iframe download approach
+            const iframe = document.createElement('iframe');
+            iframe.style.display = 'none';
+            document.body.appendChild(iframe);
+            
+            const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
+            if (!iframeDoc) {
+              throw new Error("Could not access iframe document");
+            }
+            
+            const link = iframeDoc.createElement('a');
+            link.href = dataURL;
+            link.download = 'adentus_furiosi_fortune.png';
+            iframeDoc.body.appendChild(link);
+            link.click();
+            
+            // Clean up after a delay
+            setTimeout(() => {
+              document.body.removeChild(iframe);
+              resolve();
+            }, 100);
           }
-          
-          // Create a download link in the iframe
-          const link = iframeDoc.createElement('a');
-          link.href = dataURL;
-          link.download = 'crystal-ball-fortune.png';
-          iframeDoc.body.appendChild(link);
-          
-          // Trigger click in the iframe context
-          link.click();
-          
-          // Clean up after a delay
-          setTimeout(() => {
-            document.body.removeChild(iframe);
-            resolve();
-          }, 100);
+          resolve();
         } catch (error) {
           console.error("Error in canvas fallback:", error);
           reject(error);
@@ -632,7 +636,7 @@ export default function HomePage() {
                                   </Button>
                                   <Button 
                                     onClick={() => {
-                                      const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent( fortune + ' 𝐔𝐧𝐥𝐨𝐜𝐤 𝐲𝐨𝐮𝐫 𝐦𝐚𝐫𝐤𝐞𝐭𝐢𝐧𝐠 𝐩𝐨𝐭𝐞𝐧𝐭𝐢𝐚𝐥: https://www.adfury.ai')}`; /*These are special Unicode characters. Ask claude to fix this if it's too weird.*/
+                                      const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent( fortune + ' 𝐔𝐧𝐥𝐨𝐜𝐤 𝐲𝐨𝐮𝐫 𝐦𝐚𝐫𝐤��𝐭𝐢𝐧𝐠 𝐩𝐨𝐭𝐞𝐧𝐭𝐢𝐚𝐥: https://www.adfury.ai')}`; /*These are special Unicode characters. Ask claude to fix this if it's too weird.*/
                                       window.open(url, '_blank', 'width=600,height=400');
                                     }}
                                     className="bg-black hover:bg-gray-800 px-4 flex-1 md:flex-none"
