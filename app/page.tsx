@@ -217,50 +217,63 @@ export default function HomePage() {
               // Convert to data URL first
               const dataURL = canvas.toDataURL('image/png', 0.95);
               
-              // For iOS, open in new tab instead of downloading
+              // For iOS, show image in a temporary overlay
               if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-                const newWindow = window.open();
-                if (newWindow) {
-                  newWindow.document.write(`
-                    <!DOCTYPE html>
-                    <html>
-                      <head>
-                        <title>Your Fortune</title>
-                        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-                        <style>
-                          body {
-                            margin: 0;
-                            padding: 20px;
-                            display: flex;
-                            flex-direction: column;
-                            align-items: center;
-                            justify-content: center;
-                            min-height: 100vh;
-                            background: #1a1040;
-                            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-                          }
-                          img {
-                            max-width: 100%;
-                            height: auto;
-                            border-radius: 12px;
-                            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-                          }
-                          p {
-                            color: white;
-                            text-align: center;
-                            margin-top: 20px;
-                            font-size: 16px;
-                          }
-                        </style>
-                      </head>
-                      <body>
-                        <img src="${dataURL}" alt="Your Fortune">
-                        <p>Press and hold image to save or share</p>
-                      </body>
-                    </html>
-                  `);
-                  newWindow.document.close();
-                }
+                // Create a full-screen overlay
+                const overlay = document.createElement('div');
+                overlay.style.position = 'fixed';
+                overlay.style.top = '0';
+                overlay.style.left = '0';
+                overlay.style.width = '100%';
+                overlay.style.height = '100%';
+                overlay.style.backgroundColor = '#1a1040';
+                overlay.style.zIndex = '9999';
+                overlay.style.display = 'flex';
+                overlay.style.flexDirection = 'column';
+                overlay.style.alignItems = 'center';
+                overlay.style.justifyContent = 'center';
+                
+                // Create the image
+                const img = document.createElement('img');
+                img.src = dataURL;
+                img.style.maxWidth = '90%';
+                img.style.height = 'auto';
+                img.style.borderRadius = '12px';
+                img.style.boxShadow = '0 4px 12px rgba(0,0,0,0.2)';
+                
+                // Add instructions
+                const instructions = document.createElement('p');
+                instructions.textContent = 'Press and hold image to save';
+                instructions.style.color = 'white';
+                instructions.style.marginTop = '20px';
+                instructions.style.fontFamily = '-apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
+                
+                // Add close button
+                const closeButton = document.createElement('button');
+                closeButton.textContent = '✕';
+                closeButton.style.position = 'absolute';
+                closeButton.style.top = '20px';
+                closeButton.style.right = '20px';
+                closeButton.style.background = 'none';
+                closeButton.style.border = 'none';
+                closeButton.style.color = 'white';
+                closeButton.style.fontSize = '24px';
+                closeButton.style.cursor = 'pointer';
+                closeButton.onclick = () => document.body.removeChild(overlay);
+                
+                // Assemble and show overlay
+                overlay.appendChild(closeButton);
+                overlay.appendChild(img);
+                overlay.appendChild(instructions);
+                document.body.appendChild(overlay);
+                
+                // Remove overlay when clicking outside the image
+                overlay.onclick = (e) => {
+                  if (e.target === overlay) {
+                    document.body.removeChild(overlay);
+                  }
+                };
+                
                 resolve();
               } else {
                 // For other devices, use the iframe download approach
@@ -391,50 +404,63 @@ export default function HomePage() {
           // Use data URL approach for more reliable downloads
           const dataURL = canvas.toDataURL('image/png', 0.95);
           
-          // For iOS, open in new tab instead of downloading
+          // For iOS, show image in a temporary overlay
           if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-            const newWindow = window.open();
-            if (newWindow) {
-              newWindow.document.write(`
-                <!DOCTYPE html>
-                <html>
-                  <head>
-                    <title>Your Fortune</title>
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-                    <style>
-                      body {
-                        margin: 0;
-                        padding: 20px;
-                        display: flex;
-                        flex-direction: column;
-                        align-items: center;
-                        justify-content: center;
-                        min-height: 100vh;
-                        background: #1a1040;
-                        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-                      }
-                      img {
-                        max-width: 100%;
-                        height: auto;
-                        border-radius: 12px;
-                        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-                      }
-                      p {
-                        color: white;
-                        text-align: center;
-                        margin-top: 20px;
-                        font-size: 16px;
-                      }
-                    </style>
-                  </head>
-                  <body>
-                    <img src="${dataURL}" alt="Your Fortune">
-                    <p>Press and hold image to save or share</p>
-                  </body>
-                </html>
-              `);
-              newWindow.document.close();
-            }
+            // Create a full-screen overlay
+            const overlay = document.createElement('div');
+            overlay.style.position = 'fixed';
+            overlay.style.top = '0';
+            overlay.style.left = '0';
+            overlay.style.width = '100%';
+            overlay.style.height = '100%';
+            overlay.style.backgroundColor = '#1a1040';
+            overlay.style.zIndex = '9999';
+            overlay.style.display = 'flex';
+            overlay.style.flexDirection = 'column';
+            overlay.style.alignItems = 'center';
+            overlay.style.justifyContent = 'center';
+            
+            // Create the image
+            const img = document.createElement('img');
+            img.src = dataURL;
+            img.style.maxWidth = '90%';
+            img.style.height = 'auto';
+            img.style.borderRadius = '12px';
+            img.style.boxShadow = '0 4px 12px rgba(0,0,0,0.2)';
+            
+            // Add instructions
+            const instructions = document.createElement('p');
+            instructions.textContent = 'Press and hold image to save';
+            instructions.style.color = 'white';
+            instructions.style.marginTop = '20px';
+            instructions.style.fontFamily = '-apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
+            
+            // Add close button
+            const closeButton = document.createElement('button');
+            closeButton.textContent = '✕';
+            closeButton.style.position = 'absolute';
+            closeButton.style.top = '20px';
+            closeButton.style.right = '20px';
+            closeButton.style.background = 'none';
+            closeButton.style.border = 'none';
+            closeButton.style.color = 'white';
+            closeButton.style.fontSize = '24px';
+            closeButton.style.cursor = 'pointer';
+            closeButton.onclick = () => document.body.removeChild(overlay);
+            
+            // Assemble and show overlay
+            overlay.appendChild(closeButton);
+            overlay.appendChild(img);
+            overlay.appendChild(instructions);
+            document.body.appendChild(overlay);
+            
+            // Remove overlay when clicking outside the image
+            overlay.onclick = (e) => {
+              if (e.target === overlay) {
+                document.body.removeChild(overlay);
+              }
+            };
+            
             resolve();
           } else {
             // For other devices, use the iframe download approach
