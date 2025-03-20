@@ -217,21 +217,50 @@ export default function HomePage() {
               // Convert to data URL first
               const dataURL = canvas.toDataURL('image/png', 0.95);
               
-              // For iOS, create a direct link in the current window
+              // For iOS, open in new tab instead of downloading
               if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-                // Create a temporary link
-                const link = document.createElement('a');
-                link.href = dataURL;
-                link.target = '_self'; // Open in same window
-                document.body.appendChild(link);
-                
-                // Trigger click
-                link.click();
-                
-                // Clean up
-                setTimeout(() => {
-                  document.body.removeChild(link);
-                }, 100);
+                const newWindow = window.open();
+                if (newWindow) {
+                  newWindow.document.write(`
+                    <!DOCTYPE html>
+                    <html>
+                      <head>
+                        <title>Your Fortune</title>
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+                        <style>
+                          body {
+                            margin: 0;
+                            padding: 20px;
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                            justify-content: center;
+                            min-height: 100vh;
+                            background: #1a1040;
+                            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+                          }
+                          img {
+                            max-width: 100%;
+                            height: auto;
+                            border-radius: 12px;
+                            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+                          }
+                          p {
+                            color: white;
+                            text-align: center;
+                            margin-top: 20px;
+                            font-size: 16px;
+                          }
+                        </style>
+                      </head>
+                      <body>
+                        <img src="${dataURL}" alt="Your Fortune">
+                        <p>Press and hold image to save or share</p>
+                      </body>
+                    </html>
+                  `);
+                  newWindow.document.close();
+                }
                 resolve();
               } else {
                 // For other devices, use the iframe download approach
@@ -362,21 +391,50 @@ export default function HomePage() {
           // Use data URL approach for more reliable downloads
           const dataURL = canvas.toDataURL('image/png', 0.95);
           
-          // For iOS, create a direct link in the current window
+          // For iOS, open in new tab instead of downloading
           if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-            // Create a temporary link
-            const link = document.createElement('a');
-            link.href = dataURL;
-            link.target = '_self'; // Open in same window
-            document.body.appendChild(link);
-            
-            // Trigger click
-            link.click();
-            
-            // Clean up
-            setTimeout(() => {
-              document.body.removeChild(link);
-            }, 100);
+            const newWindow = window.open();
+            if (newWindow) {
+              newWindow.document.write(`
+                <!DOCTYPE html>
+                <html>
+                  <head>
+                    <title>Your Fortune</title>
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+                    <style>
+                      body {
+                        margin: 0;
+                        padding: 20px;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+                        min-height: 100vh;
+                        background: #1a1040;
+                        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+                      }
+                      img {
+                        max-width: 100%;
+                        height: auto;
+                        border-radius: 12px;
+                        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+                      }
+                      p {
+                        color: white;
+                        text-align: center;
+                        margin-top: 20px;
+                        font-size: 16px;
+                      }
+                    </style>
+                  </head>
+                  <body>
+                    <img src="${dataURL}" alt="Your Fortune">
+                    <p>Press and hold image to save or share</p>
+                  </body>
+                </html>
+              `);
+              newWindow.document.close();
+            }
             resolve();
           } else {
             // For other devices, use the iframe download approach
