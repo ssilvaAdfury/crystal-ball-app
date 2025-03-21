@@ -232,27 +232,31 @@ export default function HomePage() {
           return new Promise<void>((resolve) => {
             // Method that works consistently regardless of entry point
             try {
-              // Create a temporary anchor element
-              const a = document.createElement('a');
-              a.href = dataURL;
-              
-              // Important: This prevents the download prompt on iOS
-              a.setAttribute('target', '_blank');
-              a.setAttribute('rel', 'noopener noreferrer');
-              
-              // Set download attribute but don't rely on it for iOS
-              a.download = 'adentus_furiosi_fortune.png';
-              
-              // Add to DOM briefly (required for Firefox)
-              document.body.appendChild(a);
-              
-              // Trigger the click programmatically
-              a.click();
-              
-              // Clean up
-              setTimeout(() => {
-                document.body.removeChild(a);
-              }, 100);
+              // For Safari, we need to use a different approach
+              if (/^((?!chrome|android).)*safari/i.test(navigator.userAgent)) {
+                // Safari-specific approach - creates a temporary data URL page
+                const blob = dataURLtoBlob(dataURL);
+                const blobUrl = URL.createObjectURL(blob);
+                
+                window.location.href = blobUrl;
+                
+                // We can't clean up the blob URL right away since we're navigating away
+                // It will be automatically cleaned up when the page session ends
+              } else {
+                // For non-Safari browsers - use the anchor approach
+                const a = document.createElement('a');
+                a.href = dataURL;
+                a.setAttribute('target', '_blank');
+                a.setAttribute('rel', 'noopener noreferrer');
+                a.download = 'adentus_furiosi_fortune.png';
+                document.body.appendChild(a);
+                a.click();
+                
+                // Clean up
+                setTimeout(() => {
+                  document.body.removeChild(a);
+                }, 100);
+              }
               
               resolve();
             } catch (error) {
@@ -362,27 +366,31 @@ export default function HomePage() {
           
           // Method that works consistently regardless of entry point
           try {
-            // Create a temporary anchor element
-            const a = document.createElement('a');
-            a.href = dataURL;
-            
-            // Important: This prevents the download prompt on iOS
-            a.setAttribute('target', '_blank');
-            a.setAttribute('rel', 'noopener noreferrer');
-            
-            // Set download attribute but don't rely on it for iOS
-            a.download = 'adentus_furiosi_fortune.png';
-            
-            // Add to DOM briefly (required for Firefox)
-            document.body.appendChild(a);
-            
-            // Trigger the click programmatically
-            a.click();
-            
-            // Clean up
-            setTimeout(() => {
-              document.body.removeChild(a);
-            }, 100);
+            // For Safari, we need to use a different approach
+            if (/^((?!chrome|android).)*safari/i.test(navigator.userAgent)) {
+              // Safari-specific approach - creates a temporary data URL page
+              const blob = dataURLtoBlob(dataURL);
+              const blobUrl = URL.createObjectURL(blob);
+              
+              window.location.href = blobUrl;
+              
+              // We can't clean up the blob URL right away since we're navigating away
+              // It will be automatically cleaned up when the page session ends
+            } else {
+              // For non-Safari browsers - use the anchor approach
+              const a = document.createElement('a');
+              a.href = dataURL;
+              a.setAttribute('target', '_blank');
+              a.setAttribute('rel', 'noopener noreferrer');
+              a.download = 'adentus_furiosi_fortune.png';
+              document.body.appendChild(a);
+              a.click();
+              
+              // Clean up
+              setTimeout(() => {
+                document.body.removeChild(a);
+              }, 100);
+            }
             
             resolve();
           } catch (error) {
@@ -433,6 +441,21 @@ export default function HomePage() {
       captureCard();
     }, [isDrawerOpen, fortune]);
     
+    // Helper function to convert dataURL to Blob
+    const dataURLtoBlob = (dataURL: string): Blob => {
+      const arr = dataURL.split(',');
+      const mime = arr[0].match(/:(.*?);/)?.[1] || 'image/png';
+      const bstr = atob(arr[1]);
+      let n = bstr.length;
+      const u8arr = new Uint8Array(n);
+      
+      while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+      }
+      
+      return new Blob([u8arr], {type: mime});
+    };
+
   return (
       <main className="relative min-h-screen w-screen overflow-x-hidden flex flex-col items-center justify-center text-gray-100 text-shadow">
         {/* Animated Background */}
