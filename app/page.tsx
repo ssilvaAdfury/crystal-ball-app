@@ -37,7 +37,9 @@ export default function HomePage() {
     const handleGetFortune = async () => {
       // Check if all fields are empty
       const allFieldsEmpty = !color && !mood && !dream;
+      const isMobile = window.innerWidth <= 768;
       
+      // Show glow effect for empty fields on both mobile and desktop
       if (allFieldsEmpty) {
         // Trigger the glow effect
         setIsGlowing(true);
@@ -47,34 +49,27 @@ export default function HomePage() {
           setIsGlowing(false);
         }, 2000);
         
-        // On mobile, scroll to questionnaire but still continue with fortune generation
-        const isMobile = window.innerWidth <= 768;
+        // On mobile with empty fields, scroll to questionnaire and stay there
         if (isMobile && questionnaireRef.current) {
           questionnaireRef.current.scrollIntoView({ 
             behavior: 'smooth', 
             block: 'center' 
           });
           
-          // Small delay to allow the scroll to be noticeable
+          // Short delay to ensure the scroll completes
           await new Promise(resolve => setTimeout(resolve, 300));
         }
+      } else if (isMobile) {
+        // Only scroll to top if on mobile AND fields are filled
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+        
+        // Small delay to allow scroll to complete
+        await new Promise(resolve => setTimeout(resolve, 300));
       }
-      
-      // For all other cases (desktop or mobile with filled fields), scroll to top
-      if (!allFieldsEmpty || window.innerWidth > 768) {
-        const scrollToTop = () => {
-          window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-          });
-        };
-
-        // Call scroll immediately
-        scrollToTop();
-
-        // Set a small delay before proceeding with fortune generation
-        await new Promise(resolve => setTimeout(resolve, 100));
-      }
+      // For desktop, we don't scroll at all, regardless of field status
 
       if (fortune) {
         // If there's an existing fortune, fade it out first
