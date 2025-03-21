@@ -39,8 +39,8 @@ export default function HomePage() {
       const allFieldsEmpty = !color && !mood && !dream;
       const isMobile = window.innerWidth <= 768;
       
-      // Show glow effect for empty fields on both mobile and desktop
-      if (allFieldsEmpty) {
+      // On mobile with empty fields, just show questionnaire with glow effect but don't generate fortune
+      if (allFieldsEmpty && isMobile) {
         // Trigger the glow effect
         setIsGlowing(true);
         
@@ -49,18 +49,29 @@ export default function HomePage() {
           setIsGlowing(false);
         }, 2000);
         
-        // On mobile with empty fields, scroll to questionnaire and stay there
-        if (isMobile && questionnaireRef.current) {
+        // Scroll to questionnaire
+        if (questionnaireRef.current) {
           questionnaireRef.current.scrollIntoView({ 
             behavior: 'smooth', 
             block: 'center' 
           });
-          
-          // Short delay to ensure the scroll completes
-          await new Promise(resolve => setTimeout(resolve, 300));
         }
-      } else if (isMobile) {
-        // Only scroll to top if on mobile AND fields are filled
+        
+        // Exit early - don't generate fortune on mobile with empty fields
+        return;
+      }
+      
+      // For desktop with empty fields OR any device with filled fields
+      // Show glow effect for empty fields on desktop
+      if (allFieldsEmpty && !isMobile) {
+        setIsGlowing(true);
+        setTimeout(() => {
+          setIsGlowing(false);
+        }, 2000);
+      }
+      
+      // For mobile with filled fields, scroll to top
+      if (isMobile) {
         window.scrollTo({
           top: 0,
           behavior: 'smooth'
