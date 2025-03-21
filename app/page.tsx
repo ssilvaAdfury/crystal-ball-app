@@ -22,6 +22,8 @@ export default function HomePage() {
     const [isCapturing, setIsCapturing] = useState(false);
     const fortuneCardRef = useRef<HTMLDivElement>(null);
     const [hasGeneratedFortune, setHasGeneratedFortune] = useState(false);
+    const [isGlowing, setIsGlowing] = useState(false);
+    const questionnaireRef = useRef<HTMLDivElement>(null);
   
     // Toggle this to true when you want to use AI for fortune generation
     const usingAI = true;
@@ -33,19 +35,46 @@ export default function HomePage() {
     }
 
     const handleGetFortune = async () => {
-      // Ensure we're at the top before starting
-      const scrollToTop = () => {
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth'
-        });
-      };
+      // Check if all fields are empty
+      const allFieldsEmpty = !color && !mood && !dream;
+      
+      if (allFieldsEmpty) {
+        // Trigger the glow effect
+        setIsGlowing(true);
+        
+        // Reset glow after animation completes
+        setTimeout(() => {
+          setIsGlowing(false);
+        }, 2000);
+        
+        // On mobile, scroll to questionnaire but still continue with fortune generation
+        const isMobile = window.innerWidth <= 768;
+        if (isMobile && questionnaireRef.current) {
+          questionnaireRef.current.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'center' 
+          });
+          
+          // Small delay to allow the scroll to be noticeable
+          await new Promise(resolve => setTimeout(resolve, 300));
+        }
+      }
+      
+      // For all other cases (desktop or mobile with filled fields), scroll to top
+      if (!allFieldsEmpty || window.innerWidth > 768) {
+        const scrollToTop = () => {
+          window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+          });
+        };
 
-      // Call scroll immediately
-      scrollToTop();
+        // Call scroll immediately
+        scrollToTop();
 
-      // Set a small delay before proceeding with fortune generation
-      await new Promise(resolve => setTimeout(resolve, 100));
+        // Set a small delay before proceeding with fortune generation
+        await new Promise(resolve => setTimeout(resolve, 100));
+      }
 
       if (fortune) {
         // If there's an existing fortune, fade it out first
@@ -712,7 +741,14 @@ export default function HomePage() {
             </div>
             
             {/* Right side: Questionnaire - adjusted responsive margins */}
-            <div className="w-full max-w-sm lg:max-w-xs text-gray-200 border border-purple-300/30 bg-white/5 backdrop-blur-md shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] rounded-2xl p-3 md:p-4 mt-20 md:mt-16 lg:mt-[-50px] relative z-10">
+            <div 
+              ref={questionnaireRef}
+              className={`w-full max-w-sm lg:max-w-xs text-gray-200 border ${
+                isGlowing 
+                  ? 'animate-glow border-white' 
+                  : 'border-purple-300/30'
+              } bg-white/5 backdrop-blur-md shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] rounded-2xl p-3 md:p-4 mt-20 md:mt-16 lg:mt-[-50px] relative z-10 transition-all duration-300`}
+            >
               <p className="mb-2 p-2 text-center sm:text-left text-gray-100/90">Tell me about yourself, so that I may find the answers to what you seek:</p>
               <form className="space-y-3 md:space-y-4">
                 <div>
